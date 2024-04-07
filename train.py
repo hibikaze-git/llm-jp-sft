@@ -187,7 +187,7 @@ def main() -> None:
     if sft_training_args.use_wandb:
         import deepspeed
         from deepspeed.accelerator import get_accelerator
-        is_local_rank_0 = (torch.distributed.get_rank() % get_accelerator().device_count() == 0)
+        is_local_rank_0 = (torch.distributed.get_rank() % get_accelerator().device_count() == 0) if torch.distributed.is_initialized() else True
         if is_local_rank_0:
             import socket
             import wandb
