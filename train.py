@@ -43,6 +43,7 @@ class SFTTrainingArguments:
     wandb_entity: Optional[str] = None
     wandb_project: Optional[str] = None
     wandb_group: Optional[str] = None
+    wandb_tag: Optional[str] = None
 
     def __post_init__(self):
         if self.load_in_8bit and self.load_in_4bit:
@@ -192,7 +193,9 @@ def main() -> None:
             import socket
             import wandb
             logger.info("Setting up wandb")
-            wandb.init(entity=sft_training_args.wandb_entity, project=sft_training_args.wandb_project, group=sft_training_args.wandb_group, name=socket.gethostname())
+            wandb.init(entity=sft_training_args.wandb_entity, project=sft_training_args.wandb_project,
+                       group=sft_training_args.wandb_group, name=socket.gethostname(),
+                       tags=[sft_training_args.wandb_tag] if sft_training_args.wandb_tag else None)
 
     logger.info("Setting up trainer")
     trainer = SFTTrainer(
